@@ -2,14 +2,24 @@
 import eslint from '@eslint/js';
 import eslintPluginPrettierRecommended from 'eslint-plugin-prettier/recommended';
 import globals from 'globals';
-import tseslint from 'typescript-eslint';
+import tsEslint from 'typescript-eslint';
+import { FlatCompat } from '@eslint/eslintrc';
+import { fileURLToPath } from 'node:url';
+import path from 'node:path';
 
-export default tseslint.config(
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+const compat = new FlatCompat({
+  baseDirectory: __dirname,
+});
+
+export default tsEslint.config(
   {
     ignores: ['eslint.config.mjs'],
   },
   eslint.configs.recommended,
-  ...tseslint.configs.recommendedTypeChecked,
+  ...compat.extends('airbnb-base'),
+  ...tsEslint.configs.recommendedTypeChecked,
   eslintPluginPrettierRecommended,
   {
     languageOptions: {
@@ -27,9 +37,25 @@ export default tseslint.config(
   },
   {
     rules: {
+      'no-console': 'warn',
+      'import/prefer-default-export': 'off',
+      'class-methods-use-this': 'off',
+      'no-useless-constructor': 'off',
+      'no-empty-function': 'off',
+      'import/no-extraneous-dependencies': 'off',
+      'import/no-unresolved': 'off',
+      'import/extensions': 'off',
+      '@typescript-eslint/unbound-method': 'off',
       '@typescript-eslint/no-explicit-any': 'off',
       '@typescript-eslint/no-floating-promises': 'warn',
-      '@typescript-eslint/no-unsafe-argument': 'warn'
+      '@typescript-eslint/no-unsafe-argument': 'warn',
+    },
+  },
+  {
+    files: ['**/*.spec.ts', '**/*.e2e-spec.ts'],
+    rules: {
+      'jest/expect-expect': 'off',
+      '@typescript-eslint/no-unsafe-assignment': 'off',
     },
   },
 );

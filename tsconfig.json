@@ -1,21 +1,37 @@
 {
+  "exclude": [
+    "node_modules",
+    "dist"
+  ],
+  "include": [
+    "src/",
+    "./test/"
+  ],
+  "ts-node": {
+    "require": [
+      "tsconfig-paths/register"
+    ],
+    "swc": true,
+    "transpileOnly": true
+  },
   "compilerOptions": {
-    "module": "commonjs",
-    "declaration": true,
-    "removeComments": true,
     "emitDecoratorMetadata": true,
+    "esModuleInterop": true,
     "experimentalDecorators": true,
-    "allowSyntheticDefaultImports": true,
-    "target": "ES2023",
-    "sourceMap": true,
+    "isolatedModules": true,
+    "module": "commonjs",
+    "moduleResolution": "node",
     "outDir": "./dist",
-    "baseUrl": "./",
-    "incremental": true,
+    "paths": {
+      "@Common/*": ["./src/common/*"],
+      "@Auth/*": ["./src/auth/*"],
+      "@User/*": ["./src/users/*"]
+    },
+    "resolveJsonModule": true,
     "skipLibCheck": true,
-    "strictNullChecks": true,
-    "forceConsistentCasingInFileNames": true,
-    "noImplicitAny": true,
-    "strictBindCallApply": true,
-    "noFallthroughCasesInSwitch": true
+    "sourceMap": true,
+    "strict": true,
+    "target": "ES2023",
+    "typeRoots": ["node_modules/@types"]
   }
 }
