@@ -4,8 +4,6 @@ import { Logger, LoggerModule } from 'nestjs-pino';
 import { createUUID } from '@Common/utils/create-uuid';
 import { APP_PIPE } from '@nestjs/core';
 import { ZodValidationPipe } from 'nestjs-zod';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
 import { typeOrmModule } from './typeorm.module';
 
 @Module({
@@ -25,13 +23,12 @@ import { typeOrmModule } from './typeorm.module';
       },
     }),
   ],
-  controllers: [AppController],
+  controllers: [],
   providers: [
     {
       provide: APP_PIPE,
       useClass: ZodValidationPipe,
     },
-    AppService,
     Logger,
   ],
 })
