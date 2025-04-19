@@ -4,9 +4,11 @@ import { Logger, LoggerModule } from 'nestjs-pino';
 import { createUUID } from '@Common/utils/create-uuid';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
+import { typeOrmModule } from './typeorm.module';
 
 @Module({
   imports: [
+    typeOrmModule,
     ConfigModule.forRoot({ isGlobal: true }),
     LoggerModule.forRootAsync({
       imports: [ConfigModule],
