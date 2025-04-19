@@ -16,10 +16,10 @@
     "dev": "nest start watch | pino-pretty",
     "dev:debug": "nest start watch -debug | pino-pretty",
     "lint": "npm run prettier && npm run eslint",
-    "eslint": "eslint \"{src,test}/**/*.ts\"",
+    "eslint": "eslint \"{src,test,migrations}/**/*.ts\"",
     "eslint:fix": "npm run eslint -- --fix",
-    "prettier": "prettier --check \"{src,test}/**/*.ts\"",
-    "prettier:fix": "prettier --write \"{src,test}/**/*.ts\"",
+    "prettier": "prettier --check \"{src,test,migrations}/**/*.ts\"",
+    "prettier:fix": "prettier --write \"{src,test,migrations}/**/*.ts\"",
     "test:all": "npm run jest -- --selectProjects unit --selectProjects integration",
     "test:unit": "npm run jest -- --selectProjects unit",
     "test:integration": "npm run jest -- --selectProjects integration",
@@ -29,10 +29,15 @@
     "test:unit:ci": "npm run jest:ci -- --selectProjects unit -maxWorkers=6",
     "test:integration:ci": "npm run jest:ci -- --selectProjects integration -maxWorkers=6",
     "jest:ci": "LOG_LEVEL=silent node --expose-gc --max-old-space-size=4096 ./node_modules/.bin/jest --ci --silent --forceExit --logHeapUsage",
+    "swagger:generate": "nest start --entryFile src/common/swagger/scripts/generate-swagger.js && prettier --write specs/hr-suite.json",
+    "migration:generate": "npx ts-node -P ./tsconfig.json -r tsconfig-paths/register ./node_modules/typeorm/cli.js migration:generate -d ./src/typeorm.config.ts ./migrations/migration",
+    "migration:create": "npx ts-node -P ./tsconfig.json -r tsconfig-paths/register ./node_modules/typeorm/cli.js migration:create -d ./src/typeorm.config.ts ./migrations/migration",
+    "migration:run": "npx ts-node -P ./tsconfig.json -r tsconfig-paths/register ./node_modules/typeorm/cli.js migration:run -d ./src/typeorm.config.ts",
+    "migration:revert": "npx ts-node -P ./tsconfig.json -r tsconfig-paths/register ./node_modules/typeorm/cli.js migration:revert -d ./src/typeorm.config.ts",
     "prepare": "husky"
   },
   "lint-staged": {
-    "{src,test}/**/*.ts": [
+    "{src,test,migrations}/**/*.ts": [
       "prettier --write",
       "eslint --fix"
     ]
@@ -45,10 +50,13 @@
     "@nestjs/typeorm": "^11.0.0",
     "helmet": "^8.1.0",
     "nestjs-pino": "^4.4.0",
+    "nestjs-zod": "^4.3.1",
     "pg": "^8.14.1",
     "reflect-metadata": "^0.2.2",
     "typeorm": "^0.3.21",
-    "typeorm-naming-strategies": "^4.1.0"
+    "typeorm-naming-strategies": "^4.1.0",
+    "uuid": "^11.1.0",
+    "zod": "^3.24.2"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3.2.0",
@@ -61,6 +69,8 @@
     "@types/express": "^5.0.0",
     "@types/jest": "^29.5.14",
     "@types/node": "^22.10.7",
+    "@types/passport-jwt": "^4.0.1",
+    "@types/passport-local": "^1.0.38",
     "@types/supertest": "^6.0.2",
     "eslint": "^8.2.0",
     "eslint-config-airbnb-base": "^15.0.0",

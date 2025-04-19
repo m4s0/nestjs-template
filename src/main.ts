@@ -4,6 +4,7 @@ import { NestExpressApplication } from '@nestjs/platform-express';
 import { ConfigService } from '@nestjs/config';
 import { Logger, PinoLogger } from 'nestjs-pino';
 import { AppModule } from './app.module';
+import { addFilters } from './add-filters';
 
 async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule, {
@@ -13,6 +14,8 @@ async function bootstrap() {
 
   const configService = app.get<ConfigService>(ConfigService);
   const port = configService.get<string>('PORT') ?? 3000;
+
+  addFilters(app);
 
   app.use(helmet());
   await app.listen(port);
